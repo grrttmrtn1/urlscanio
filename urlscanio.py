@@ -21,8 +21,13 @@ class urlscanio:
             return uri + '/'
         else:
             return uri 
-    def waitForResults():
-        
+    def waitForResults(self, process, uuid):
+        if process == 'result':
+            uri = self.base_uri + 'result/' + uuid
+        elif process == 'dom':
+            uri = 'https://urlscan.io/dom/' + uuid
+        elif process == 'screenshots':
+            uri = 'https://urlscan.io/screenshots/' + uuid = '.png'
 
     def submit(self, uri):
         try:
