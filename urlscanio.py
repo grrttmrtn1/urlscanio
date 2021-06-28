@@ -28,6 +28,16 @@ class urlscanio:
             uri = 'https://urlscan.io/dom/' + uuid
         elif process == 'screenshots':
             uri = 'https://urlscan.io/screenshots/' + uuid = '.png'
+        i=0
+        while i <= 60:
+            try:
+                response = requests.get(uri, headers=self.headers)
+                if response.status_code == requests.codes.ok:
+                    return response
+                    break
+            i += 1
+            except Exception as e:
+                print(e)
 
     def submit(self, uri):
         try:
