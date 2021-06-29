@@ -19,20 +19,22 @@ class urlscanio:
             return uri + '/'
         else:
             return uri 
-    def waitForResults(self, process, uuid):
+    def waitForResults(self, process, uuid=None, search=None):
         if process == 'result':
             uri = self.base_uri + 'result/' + uuid
         elif process == 'dom':
             uri = 'https://urlscan.io/dom/' + uuid
         elif process == 'screenshots':
             uri = 'https://urlscan.io/screenshots/' + uuid + '.png'
+        elif process == 'search':
+            if search == None:
+                raise Exception('Please provide a search query')
+            else:
+                uri = "https://urlscan.io/api/v1/search/?q=" + search
         i=0
-        print(uri)
         while i <= 60:
             try:
-                print(i)
                 response = requests.get(uri, headers=self.headers)
-                print(response)
                 if response.status_code == requests.codes.ok:
                     return response.content
                     break
@@ -57,4 +59,10 @@ class urlscanio:
         return self.waitForResults('screenshots', uuid)   
     def getResults(self, uuid):
         return self.waitForResults('result', uuid)
-    def search(self, search):
+    def search(self, search, help=False):
+        if help == True:
+            print('Please reference official documentation for search queries. This does no formatting or checks of provided query\nhttps://urlscan.io/docs/search/')
+        else:
+            help = False
+        return self.waitForResults('search', search=search)
+        
